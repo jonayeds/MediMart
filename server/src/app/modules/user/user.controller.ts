@@ -4,6 +4,7 @@ import { UserServices } from "./user.service";
 
 const registerUser = catchAsync(async (req, res)=>{
     const result = await UserServices.registerUser(req.body)
+    res.cookie("accessToken", result.accessToken)
     sendResponse(res,{
         statusCode:200,
         success:true,

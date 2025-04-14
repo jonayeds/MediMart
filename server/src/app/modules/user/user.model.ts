@@ -1,10 +1,10 @@
 import { model, Schema } from "mongoose";
-import { IUser } from "./user.interface";
+import { IUser, IUserModel } from "./user.interface";
 import { UserRoles } from "./user.constant";
 import bcrypt from "bcrypt"
 import config from "../../config";
 
-const userSchema = new Schema<IUser>({
+const userSchema = new Schema<IUser, IUserModel>({
     name:{
         type:String,
         required:true
@@ -28,7 +28,7 @@ const userSchema = new Schema<IUser>({
     role:{
         type:String,
         enum:UserRoles,
-        required:true
+        default:"customer"
     }
 },{
     timestamps:true
@@ -44,6 +44,27 @@ userSchema.post("save", function (doc, next) {
     doc.password = "";
     next();
   });
+
+
+// statics
+userSchema.static("isUserExists", async function({email, phoneNumber, identification} ){
+    let user;
+    if(email){
+        user = await User.findOne({email})
+        if(user) return {user, property:"Email"}
+    }
+    if(phoneNumber){
+        user = await User.findOne({phoneNumber})
+        if(user) return {user, property:"Phone Number"}
+    }
+    if(identification){
+        user = await User.findOne({email:identification})
+        if(user) return {user, property:"Email"}
+        user = await User.findOne({phoneNumber:identification})
+        if(user) return {user, property:"Phone Number"}
+    }
+    return null
+})
   
 
-export const User = model<IUser>("User", userSchema) 
+export const User = model<IUser, IUserModel>("User", userSchema) 
