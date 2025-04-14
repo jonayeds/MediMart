@@ -1,7 +1,7 @@
-import config from "../../../config";
-import { AppError } from "../../../utils/appError";
-import { signJwt } from "../../../utils/signJwt";
-import { User } from "../user.model";
+import config from "../../config";
+import { AppError } from "../../utils/appError";
+import { signJwt } from "../../utils/signJwt";
+import { User } from "../user/user.model";
 import { IAuth } from "./auth.interface";
 
 const loginUser = async(payload:IAuth)=>{
