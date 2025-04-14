@@ -6,6 +6,6 @@ import { UserValidations } from "./user.validation";
 const router = Router()
 
 
-router.post("/",validateRequest(UserValidations.registerUserValidationSchema), UserControllers.registerUser)
+router.post("/register",validateRequest(UserValidations.registerUserValidationSchema), UserControllers.registerUser)
 
 export const UserRoutes = router

@@ -65,6 +65,11 @@ userSchema.static("isUserExists", async function({email, phoneNumber, identifica
     }
     return null
 })
+
+userSchema.static("isPasswordCorrect", async function(plainTextPassword, hashedPassword){
+    const isCorrect = await bcrypt.compare(plainTextPassword, hashedPassword)
+    return isCorrect
+})
   
 
 export const User = model<IUser, IUserModel>("User", userSchema) 
