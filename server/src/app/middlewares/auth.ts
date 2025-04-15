@@ -1,12 +1,12 @@
 import config from "../config";
-import { ICustomRequest } from "../interfaces";
-import { TUserRole } from "../modules/user/user.interface";
+import { IReqUser } from "../interfaces";
+import { IUser, TUserRole } from "../modules/user/user.interface";
 import { User } from "../modules/user/user.model";
 import { AppError } from "../utils/appError";
 import { catchAsync } from "../utils/catchAsync";
 import jwt, { JwtPayload } from "jsonwebtoken"
 export const auth = (...requiredRoles:TUserRole[])=>{
-    return catchAsync(async(req:ICustomRequest, res, next)=>{
+    return catchAsync(async(req, res, next)=>{
         const token = req.headers.authorization
         if(!token){
             throw new AppError(403,"You are not Authorized")
@@ -21,8 +21,10 @@ export const auth = (...requiredRoles:TUserRole[])=>{
             }
 
             const user = await User.findOne({email})
-            req.user = user
-            console.log(req.user)
+            if(!user){
+                throw new AppError(403,"You are not authorized");
+            }
+            req.user = user as unknown as IReqUser
             next()
         })
 
