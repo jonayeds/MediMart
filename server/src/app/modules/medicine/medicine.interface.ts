@@ -7,7 +7,7 @@ export interface IMedicine{
     price:number;
     stock:number;
     prescriptionRequired:boolean;
-    manufacturer:Types.ObjectId;
+    manufacturer:string;
     expiryDate:Date;
     category:TMedicineCategory;
     symptoms:string[];

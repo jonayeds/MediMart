@@ -19,8 +19,7 @@ const medicineSchema = new Schema<IMedicine>({
         required:true
     },
     manufacturer:{
-        type:Schema.Types.ObjectId,
-        ref:"User",
+        type:String,
         required:true
     },
     price:{
