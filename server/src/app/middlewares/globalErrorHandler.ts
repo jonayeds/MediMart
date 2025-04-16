@@ -2,6 +2,7 @@ import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
 import { TErrorSource } from "../interfaces";
 import { handleMongooseValidationErrror } from "../errors/handleMongooseValidationError";
+import { AppError } from "../utils/appError";
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   let statusCode = 500;
@@ -32,11 +33,24 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     message = "Duplicate Error"
     statusCode = 401
     errorSources = Object.keys(err.keyValue).map(key => ({path:key, message:`${key}: '${err.keyValue[key]}' already exists`}))
-  }
+  }else if(err instanceof AppError){
+    statusCode = err.statusCode
+    message =err.message
+    errorSources = [{
+      path:"",
+      message:err.message
+    }]
+  } else if(err instanceof Error){
+    message =err.message
+    errorSources = [{
+      path:"",
+      message:err.message
+    }]
+  } 
+  
   res.status(statusCode).json({
     success: false,
     message,
     errorSources,
-    whattaError: err,
   });
 };
