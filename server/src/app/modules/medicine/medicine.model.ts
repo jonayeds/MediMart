@@ -5,7 +5,6 @@ import  { MedicineCategories } from "./medicine.constant";
 const medicineSchema = new Schema<IMedicine>({
     name:{
         type:String,
-        required:true
     },
     description:{
         type:String,
@@ -20,7 +19,7 @@ const medicineSchema = new Schema<IMedicine>({
     },
     manufacturer:{
         type:String,
-        required:true
+        required:true,
     },
     price:{
         type:Number,

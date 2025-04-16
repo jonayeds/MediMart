@@ -8,3 +8,14 @@ export interface IReqUser extends IUser{
 export interface ICustomRequest extends Request{
     user?: IReqUser | null
 }
+
+export type TErrorSource = {
+    path: string | number;
+    message:string;
+}[]
+
+export interface IGenericErrorResponse {
+    statusCode:number;
+    message:string;
+    errorSources:TErrorSource
+}
