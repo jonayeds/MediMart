@@ -9,6 +9,6 @@ const router = Router()
 
 router.post("/", auth(roles.admin), validateRequest(MediciveValidations.createMedicineValidationSchema), MedicineControllers.createMedicine )
 router.get("/", MedicineControllers.getAllMedicine)
-router.delete("/", auth(roles.admin), MedicineControllers.deleteMedicine)
+router.delete("/:medicineId", auth(roles.admin), MedicineControllers.deleteMedicine)
 
 export const MedicineRoutes = router
