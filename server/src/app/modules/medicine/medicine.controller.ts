@@ -12,6 +12,27 @@ const createMedicine = catchAsync(async(req,res)=>{
     })
 })
 
+const getAllMedicine = catchAsync(async(req,res)=>{
+    const result = await MedicineServices.getAllMedicine(req.query)
+    sendResponse(res,{
+        success:true,
+        message:"Successfully Fetched All Medicine",
+        statusCode:200,
+        data:result
+    })
+})
+const deleteMedicine = catchAsync(async(req,res)=>{
+    const result = await MedicineServices.deleteMedicine(req.params.medicineId)
+    sendResponse(res,{
+        success:true,
+        message:"Successfully Deleted Medicine",
+        statusCode:200,
+        data:result
+    })
+})
+
 export const MedicineControllers = {
-    createMedicine
+    createMedicine,
+    getAllMedicine,
+    deleteMedicine
 }

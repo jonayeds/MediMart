@@ -8,5 +8,7 @@ import { MedicineControllers } from "./medicine.controller";
 const router = Router()
 
 router.post("/", auth(roles.admin), validateRequest(MediciveValidations.createMedicineValidationSchema), MedicineControllers.createMedicine )
+router.get("/", MedicineControllers.getAllMedicine)
+router.delete("/", auth(roles.admin), MedicineControllers.deleteMedicine)
 
 export const MedicineRoutes = router
