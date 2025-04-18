@@ -15,7 +15,7 @@ const createMedicine = async(payload:IMedicine)=>{
 }
 
 const getAllMedicine = async(query:Record<string,unknown>)=>{
-    const searchableFields = ['name', 'category', 'manufacturer']
+    const searchableFields = ['name', 'category', 'symptoms' ]
     const medicineQuery = new QueryBuilder(Medicine.find(), query)
     .search(searchableFields)
     .fields()
