@@ -13,16 +13,16 @@ export const auth = (...requiredRoles:TUserRole[])=>{
         } 
         jwt.verify(token, config.access_secret as string, async(err, decoded)=>{
             if(err){
-                throw new AppError(403,"You are not Authorized")
+                return next(new AppError(403, "You are not authorized"));
             }
             const {role, email} = decoded as JwtPayload
             if(requiredRoles && !requiredRoles.includes(role)){
-                throw new AppError(403, "You are not authorized")
+                return next(new AppError(403, "You are not authorized"));
             }
-
+            
             const user = await User.findOne({email})
             if(!user){
-                throw new AppError(403,"You are not authorized");
+                return next(new AppError(403, "You are not authorized"));
             }
             req.user = user as unknown as IReqUser
             next()
