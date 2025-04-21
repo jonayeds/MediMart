@@ -84,13 +84,16 @@ const cancelOrder = async(orderId:string, user:IReqUser)=>{
     if(isOrderExists.customer.toString() !== user._id.toString()){
         throw new AppError(403, "You are  not Authorized to cancel this order")
     }
+    if(isOrderExists.status !== "pending"){
+        throw new AppError(402, "Cannot Cancel order. Order already handled")
+    }
     const session = await mongoose.startSession()
     try {
         session.startTransaction()
         const result = await Order.findByIdAndDelete(orderId)
     if(result){
         for(const medicine of isOrderExists.medicines){
-            const res= await Medicine.findByIdAndUpdate(medicine.medicine, {
+            await Medicine.findByIdAndUpdate(medicine.medicine, {
                 $inc:{
                     stock: medicine.quantity
                 }
