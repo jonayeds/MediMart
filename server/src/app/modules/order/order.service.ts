@@ -6,7 +6,7 @@ import { IOrder, TOrderStatus } from "./order.interface";
 import { Order } from "./order.model";
 import { AllowedStatus } from "./order.constant";
 import QueryBuilder from "../../builder/QueryBuilder";
-import { makePayment } from "./order.utils";
+import { makePayment, verifyPaymentUtility } from "./order.utils";
 
 const placeOrder = async (payload: IOrder, user: IReqUser) => {
   const isMedicineExists = await Medicine.find({
@@ -127,7 +127,15 @@ const createPayment = async(order:IOrder, user:IReqUser, orderId:string)=>{
     const productsName = medicines.map(m=> m.name).join(" & ")
     const payment = await makePayment(productsName, totalPrice, user.email, orderId )
     return {paymentUrl: payment?.url}
+}
 
+const verifyPayment = async(sessionId:string)=>{
+  const session = await verifyPaymentUtility(sessionId)
+  if(session.payment_status === "paid"){
+    return session
+  }else{
+    throw new AppError(402, "Payment is not successfull")
+  }
 }
 
 export const OrdeServices = {
@@ -136,5 +144,6 @@ export const OrdeServices = {
   getMyOrders,
   getAllOrders,
   cancelOrder,
-  createPayment
+  createPayment,
+  verifyPayment
 };

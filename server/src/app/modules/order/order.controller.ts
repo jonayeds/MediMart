@@ -61,11 +61,21 @@ const createPayment = catchAsync(async(req,res)=>{
         message:"Successfully created Payment"
     })
 })
+const verifyPayment = catchAsync(async(req,res)=>{
+    const result  = await OrdeServices.verifyPayment(req.body.paymentSession)
+    sendResponse(res,{
+        data:result,
+        success:true,
+        statusCode:200,
+        message:"Successfully Verified Payment"
+    })
+})
 export const OrderControllers = {
     placeOrder,
     updateOrderStatus,
     getMyOrders,
     getAllOrders,
     cancelOrder,
-    createPayment
+    createPayment,
+    verifyPayment
 }
