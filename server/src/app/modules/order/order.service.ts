@@ -15,11 +15,21 @@ const placeOrder = async (payload: IOrder, user: IReqUser) => {
   if (isMedicineExists.length !== payload.medicines.length) {
     throw new AppError(404, "Medicine not found");
   }
+  let isPrescriptionRequired =false;
+  for(const medicine of isMedicineExists){
+    if( medicine.prescriptionRequired ){
+      isPrescriptionRequired=true
+    }
+  }
+  if(isPrescriptionRequired && !payload?.prescription) {
+    throw new AppError(401,"Prescription is Required")
+  }
   const session = await mongoose.startSession()
   try {
     session.startTransaction()
     let idx = 0;
     let price = 0
+   
   for (const medicine of isMedicineExists) {
     const payloadMedicine = payload.medicines[idx];
     const newStock = medicine.stock - Number(payloadMedicine.quantity);
@@ -30,9 +40,11 @@ const placeOrder = async (payload: IOrder, user: IReqUser) => {
       throw new AppError(400, `${medicine.name} is out of stock`);
     }
     price += medicine.price * payload.medicines[idx].quantity
+ 
     await Medicine.findOneAndUpdate(medicine._id, { stock: newStock });
     idx += 1;
   }
+
   payload.customer = new Types.ObjectId(user._id);
   payload.totalPrice = price
   const result = await Order.create(payload);
@@ -54,6 +66,15 @@ const updateOrderStatus = async (status: TOrderStatus, orderId: string) => {
   }
   if (!AllowedStatus[isOrderExists.status].includes(status)) {
     throw new AppError(402, `Order Cannot be updated to ${status}`);
+  }
+  if(status === "rejected"){
+    for(const medicine of isOrderExists.medicines){
+      await Medicine.findByIdAndUpdate(medicine.medicine, {
+          $inc:{
+              stock: medicine.quantity
+          }
+      }, {new:true})
+  }
   }
 
   const result = await Order.findByIdAndUpdate(

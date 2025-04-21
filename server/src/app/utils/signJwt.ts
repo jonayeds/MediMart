@@ -1,5 +1,5 @@
 import jwt, { SignOptions } from "jsonwebtoken"
-type TJwtPayload = {
+export type TJwtPayload = {
     phoneNumber:string;
     email:string;
     role:"customer"| "admin"
