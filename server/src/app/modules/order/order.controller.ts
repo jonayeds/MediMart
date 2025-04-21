@@ -43,9 +43,19 @@ const getAllOrders = catchAsync(async(req,res)=>{
         message:"Successfully Fetched all orders"
     })
 })
+const cancelOrder = catchAsync(async(req,res)=>{
+    const result  = await OrdeServices.cancelOrder(req.params.orderId, req.user as IReqUser)
+    sendResponse(res,{
+        data:result,
+        success:true,
+        statusCode:200,
+        message:"Successfully Cancelled Order"
+    })
+})
 export const OrderControllers = {
     placeOrder,
     updateOrderStatus,
     getMyOrders,
-    getAllOrders
+    getAllOrders,
+    cancelOrder
 }

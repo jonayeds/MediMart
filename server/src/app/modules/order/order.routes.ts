@@ -11,4 +11,5 @@ router.post("/place-order", auth(roles.customer), validateRequest(OrderValidatio
 router.patch("/update-status/:orderId", auth(roles.admin), validateRequest(OrderValidations.updateOrderStatusValidationSchema), OrderControllers.updateOrderStatus)
 router.get("/my-orders", auth(roles.customer), OrderControllers.getMyOrders)
 router.get("/all-orders", auth(roles.admin), OrderControllers.getAllOrders)
+router.delete("/cancel-order/:orderId", auth(roles.customer), OrderControllers.cancelOrder)
 export const OrderRoutes = router

@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import { IReqUser } from "../../interfaces";
 import { AppError } from "../../utils/appError";
 import { Medicine } from "../medicine/medicine.model";
@@ -14,7 +14,10 @@ const placeOrder = async (payload: IOrder, user: IReqUser) => {
   if (isMedicineExists.length !== payload.medicines.length) {
     throw new AppError(404, "Medicine not found");
   }
-  let idx = 0;
+  const session = await mongoose.startSession()
+  try {
+    session.startTransaction()
+    let idx = 0;
   for (const medicine of isMedicineExists) {
     const payloadMedicine = payload.medicines[idx];
     const newStock = medicine.stock - Number(payloadMedicine.quantity);
@@ -29,7 +32,15 @@ const placeOrder = async (payload: IOrder, user: IReqUser) => {
   }
   payload.customer = new Types.ObjectId(user._id);
   const result = await Order.create(payload);
+  await session.commitTransaction()
+  await session.endSession()
   return result;
+  } catch (error) {
+    await session.abortTransaction()
+    await session.endSession()
+    throw new AppError(500, "Could not Place order")
+  }
+  
 };
 
 const updateOrderStatus = async (status: TOrderStatus, orderId: string) => {
@@ -65,9 +76,43 @@ const getAllOrders = async(query:Record<string,unknown>)=>{
     return {data, meta}
 }
 
+const cancelOrder = async(orderId:string, user:IReqUser)=>{
+    const isOrderExists = await Order.findById(orderId)
+    if(!isOrderExists){
+        throw new AppError(404, "Order not found`")
+    }
+    if(isOrderExists.customer.toString() !== user._id.toString()){
+        throw new AppError(403, "You are  not Authorized to cancel this order")
+    }
+    const session = await mongoose.startSession()
+    try {
+        session.startTransaction()
+        const result = await Order.findByIdAndDelete(orderId)
+    if(result){
+        for(const medicine of isOrderExists.medicines){
+            const res= await Medicine.findByIdAndUpdate(medicine.medicine, {
+                $inc:{
+                    stock: medicine.quantity
+                }
+            }, {new:true})
+        }
+    }
+    await session.commitTransaction()
+    await session.endSession()
+    return result
+        
+    } catch (error) {
+       await session.abortTransaction()
+       await session.endSession()
+       throw new AppError(500, "Could not cancel Order")
+    }
+    
+}
+
 export const OrdeServices = {
   placeOrder,
   updateOrderStatus,
   getMyOrders,
-  getAllOrders
+  getAllOrders,
+  cancelOrder
 };
