@@ -6,7 +6,8 @@ export interface IUser {
     password:string;
     phoneNumber:string;
     profileImage:string;
-    role: "customer" | "admin"
+    role: "customer" | "admin";
+    address:string
 }
 
 export type TUserRole = "customer" | "admin"

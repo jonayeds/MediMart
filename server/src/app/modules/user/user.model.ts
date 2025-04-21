@@ -31,6 +31,10 @@ const userSchema = new Schema<IUser, IUserModel>({
         type:String,
         enum:UserRoles,
         default:"customer"
+    },
+    address:{
+        type:String,
+        required:true
     }
 },{
     timestamps:true
