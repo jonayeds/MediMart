@@ -9,5 +9,6 @@ export interface IOrder {
     customer:Types.ObjectId;
     paymentSession:string;
     status:TOrderStatus;
+    totalPrice:number;
     prescription:string;
 }

@@ -9,5 +9,6 @@ export default{
     port: process.env.PORT,
     databse_uri:process.env.DATABASE_URI,
     salt_rounds:process.env.SALT_ROUNDS,
-    access_secret:process.env.JWT_ACCESS_SECRET
+    access_secret:process.env.JWT_ACCESS_SECRET,
+    stripe_secret:process.env.STRIPE_SECRET_KEY
 }

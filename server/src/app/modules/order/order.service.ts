@@ -6,6 +6,7 @@ import { IOrder, TOrderStatus } from "./order.interface";
 import { Order } from "./order.model";
 import { AllowedStatus } from "./order.constant";
 import QueryBuilder from "../../builder/QueryBuilder";
+import { makePayment } from "./order.utils";
 
 const placeOrder = async (payload: IOrder, user: IReqUser) => {
   const isMedicineExists = await Medicine.find({
@@ -18,6 +19,7 @@ const placeOrder = async (payload: IOrder, user: IReqUser) => {
   try {
     session.startTransaction()
     let idx = 0;
+    let price = 0
   for (const medicine of isMedicineExists) {
     const payloadMedicine = payload.medicines[idx];
     const newStock = medicine.stock - Number(payloadMedicine.quantity);
@@ -27,10 +29,12 @@ const placeOrder = async (payload: IOrder, user: IReqUser) => {
     ) {
       throw new AppError(400, `${medicine.name} is out of stock`);
     }
+    price += medicine.price * payload.medicines[idx].quantity
     await Medicine.findOneAndUpdate(medicine._id, { stock: newStock });
     idx += 1;
   }
   payload.customer = new Types.ObjectId(user._id);
+  payload.totalPrice = price
   const result = await Order.create(payload);
   await session.commitTransaction()
   await session.endSession()
@@ -112,10 +116,25 @@ const cancelOrder = async(orderId:string, user:IReqUser)=>{
     
 }
 
+const createPayment = async(order:IOrder, user:IReqUser, orderId:string)=>{
+    const medicines = await Medicine.find({
+        $or:order.medicines.map(m=>({_id:m.medicine}))
+    })
+    let totalPrice =0
+    medicines.forEach((medicine, idx)=>{
+        totalPrice += medicine.price * order.medicines[idx].quantity
+    })
+    const productsName = medicines.map(m=> m.name).join(" & ")
+    const payment = await makePayment(productsName, totalPrice, user.email, orderId )
+    return {paymentUrl: payment?.url}
+
+}
+
 export const OrdeServices = {
   placeOrder,
   updateOrderStatus,
   getMyOrders,
   getAllOrders,
-  cancelOrder
+  cancelOrder,
+  createPayment
 };

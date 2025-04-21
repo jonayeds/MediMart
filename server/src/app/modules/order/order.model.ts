@@ -34,6 +34,10 @@ const orderSchema = new Schema<IOrder>({
         type:String,
         enum:OrderStatus,
         default:"pending"
+    },
+    totalPrice:{
+        type:Number,
+        required:true
     }
 })
 

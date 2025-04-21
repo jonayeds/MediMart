@@ -52,10 +52,20 @@ const cancelOrder = catchAsync(async(req,res)=>{
         message:"Successfully Cancelled Order"
     })
 })
+const createPayment = catchAsync(async(req,res)=>{
+    const result  = await OrdeServices.createPayment(req.body,req.user as IReqUser,req.params.orderId)
+    sendResponse(res,{
+        data:result,
+        success:true,
+        statusCode:200,
+        message:"Successfully created Payment"
+    })
+})
 export const OrderControllers = {
     placeOrder,
     updateOrderStatus,
     getMyOrders,
     getAllOrders,
-    cancelOrder
+    cancelOrder,
+    createPayment
 }
