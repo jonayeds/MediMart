@@ -14,6 +14,17 @@ const placeOrder = catchAsync(async(req,res)=>{
     })
 })
 
+
+const updateOrderStatus = catchAsync(async(req,res)=>{
+    const result  = await OrdeServices.updateOrderStatus(req.body.status, req.params.orderId)
+    sendResponse(res,{
+        data:result,
+        success:true,
+        statusCode:200,
+        message:"Successfully Updated order status"
+    })
+})
 export const OrderControllers = {
-    placeOrder
+    placeOrder,
+    updateOrderStatus
 }

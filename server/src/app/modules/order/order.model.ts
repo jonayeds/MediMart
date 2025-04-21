@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import { IMedicines, IOrder } from "./order.interface";
+import { OrderStatus } from "./order.constant";
 
 const medicinesSchema = new Schema<IMedicines>({
     medicine:{
@@ -28,6 +29,11 @@ const orderSchema = new Schema<IOrder>({
     },
     prescription:{
         type:String,
+    },
+    status:{
+        type:String,
+        enum:OrderStatus,
+        default:"pending"
     }
 })
 

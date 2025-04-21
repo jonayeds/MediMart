@@ -1,6 +1,8 @@
 import { z } from "zod";
+import { OrderStatus } from "./order.constant";
+import { TOrderStatus } from "./order.interface";
 
-export const medicinesValidationSchema = z.object({
+const medicinesValidationSchema = z.object({
   medicine: z.string().min(1, { message: "Medicine ID is required" }), // Ensure medicine ID is a valid string
   quantity: z.number().int().min(1, { message: "Quantity must be at least 1" }), // Quantity must be a positive integer
 });
@@ -13,6 +15,11 @@ const placeOrderValidation = z.object({
   prescription: z.string().optional(), // Prescription is optional
 });
 
+const updateOrderStatusValidationSchema = z.object({
+  status: z.enum(OrderStatus as [TOrderStatus, ...TOrderStatus[]], {message:"Invalid Order status"})
+})
+
 export const OrderValidations = {
   placeOrderValidation,
+  updateOrderStatusValidationSchema
 };
