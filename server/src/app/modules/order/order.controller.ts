@@ -24,7 +24,28 @@ const updateOrderStatus = catchAsync(async(req,res)=>{
         message:"Successfully Updated order status"
     })
 })
+
+const getMyOrders = catchAsync(async(req,res)=>{
+    const result  = await OrdeServices.getMyOrders(req.user as IReqUser)
+    sendResponse(res,{
+        data:result,
+        success:true,
+        statusCode:200,
+        message:"Successfully Fetched my orders"
+    })
+})
+const getAllOrders = catchAsync(async(req,res)=>{
+    const result  = await OrdeServices.getAllOrders(req.query)
+    sendResponse(res,{
+        data:result,
+        success:true,
+        statusCode:200,
+        message:"Successfully Fetched all orders"
+    })
+})
 export const OrderControllers = {
     placeOrder,
-    updateOrderStatus
+    updateOrderStatus,
+    getMyOrders,
+    getAllOrders
 }

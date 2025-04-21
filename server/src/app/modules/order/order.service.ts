@@ -5,6 +5,7 @@ import { Medicine } from "../medicine/medicine.model";
 import { IOrder, TOrderStatus } from "./order.interface";
 import { Order } from "./order.model";
 import { AllowedStatus } from "./order.constant";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 const placeOrder = async (payload: IOrder, user: IReqUser) => {
   const isMedicineExists = await Medicine.find({
@@ -48,7 +49,25 @@ const updateOrderStatus = async (status: TOrderStatus, orderId: string) => {
   return result;
 };
 
+const getMyOrders = async(user:IReqUser)=>{
+    const result = await Order.find({customer:user._id})
+    return result
+}
+
+const getAllOrders = async(query:Record<string,unknown>)=>{
+    const orderQuery = new QueryBuilder(Order.find(), query)
+    .filter()
+    .sort()
+    .paginate()
+    .fields()
+    const meta = await orderQuery.countTotal()
+    const data = await orderQuery.modelQuery
+    return {data, meta}
+}
+
 export const OrdeServices = {
   placeOrder,
   updateOrderStatus,
+  getMyOrders,
+  getAllOrders
 };

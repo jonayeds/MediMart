@@ -9,4 +9,6 @@ const router = Router()
 
 router.post("/place-order", auth(roles.customer), validateRequest(OrderValidations.placeOrderValidation),  OrderControllers.placeOrder)
 router.patch("/update-status/:orderId", auth(roles.admin), validateRequest(OrderValidations.updateOrderStatusValidationSchema), OrderControllers.updateOrderStatus)
+router.get("/my-orders", auth(roles.customer), OrderControllers.getMyOrders)
+router.get("/all-orders", auth(roles.admin), OrderControllers.getAllOrders)
 export const OrderRoutes = router
