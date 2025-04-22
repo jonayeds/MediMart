@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input"
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import { Textarea } from "../ui/textarea"
 import { Button } from "../ui/button"
+import Link from "next/link"
 
 const RegisterForm = () => {
     const form = useForm({
@@ -86,7 +87,9 @@ const RegisterForm = () => {
                         </FormItem>
                       )}
                     />
+                    <p className="text-sm text-center flex items-center gap-2 my-2 justify-center">Already have an account? <Link className="hover:underline" href={"/login"}>Login</Link></p>
                     <Button type="submit">Submit</Button>
+
                 </form>
             </Form>
   )
