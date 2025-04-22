@@ -1,4 +1,16 @@
 @import "tailwindcss";
 
+.bg-primary{
+    background-color: #e3e3e2;
+}
 
+.bg-hero{
+    background-color: #d1cfcc;
+}
 
+.bg-hero-image{
+    background-image: url("../assets/images/hero-bg.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}

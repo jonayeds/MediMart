@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Navbar from "@/components/shared/Navbar";
 
 
 
@@ -16,8 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-white`}
+        className={`bg-primary`}
+        cz-shortcut-listen="true"
       >
+        <div className="relative">
+
+        <Navbar/>
+        </div>
         {children}
       </body>
     </html>
