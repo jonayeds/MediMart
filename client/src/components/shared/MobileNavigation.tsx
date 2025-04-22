@@ -4,7 +4,9 @@ import Link from "next/link"
 const MobileNavigation = () => {
   return (
     <div className="px-4">
+        <Link href={"/"}>
         <Image src={logo} alt="MediMart" width={200} height={100} className="mx-auto mt-10 md:w-[15vw] w-[40vw]" />
+        </Link>
         <hr className="border-1 border-gray-200 my-4" />
         <div className="flex gap-y-2 flex-col md:px-[7vw] px-0">
             <Link href={"/"} className="md:hidden">Home</Link>

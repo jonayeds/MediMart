@@ -1,6 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Poiret+One&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
-
 /* @custom-variant dark (&:is(.dark *)); */
 
 .bg-primary{
@@ -23,6 +23,10 @@
 }
 .text-dark{
     color: #1A2B13;
+}
+
+.font-heading {
+    font-family: "Poiret One", sans-serif;
 }
 
  @theme inline {

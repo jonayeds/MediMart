@@ -10,8 +10,12 @@ const Navbar = () => {
   return (
     <div className="absolute w-full flex z-20 justify-between items-end px-[5vw] py-4">
         <div>
+            <Link href={"/"}>
             <Image src={logo} alt="MediMart" width={150} height={100} className="md:flex hidden" />
+            </Link>
+            <Link href={"/"}>
             <Image src={logoWhite} alt="MediMart" width={150} height={100} className="md:hidden flex" />
+            </Link>
         </div>
         <div className="flex items-center gap-24">
 
