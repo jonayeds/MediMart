@@ -24,7 +24,7 @@ const Navbar = () => {
 
         <div className="md:flex hidden items-center text-lg gap-8 ">
             <Link href={"/"} className="group cursor-pointer "><p>Home</p> <div className="bg-black h-[2px] w-0 group-hover:w-full duration-500 "/></Link>
-            <Link href={"/"} className="group cursor-pointer "><p>About</p> <div className="bg-black h-[2px] w-0 group-hover:w-full duration-500"/></Link>
+            <Link href={"/about"} className="group cursor-pointer "><p>About</p> <div className="bg-black h-[2px] w-0 group-hover:w-full duration-500"/></Link>
             <Link href={"/"} className="group cursor-pointer "><p>Medicines</p> <div className="bg-black h-[2px] w-0 group-hover:w-full duration-500"/></Link>
         </div>
         <Drawer direction="left">
