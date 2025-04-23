@@ -7,9 +7,13 @@ import { CgMenuRight } from "react-icons/cg"
 import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from "../ui/drawer"
 import MobileNavigation from "./MobileNavigation"
 import { usePathname } from "next/navigation"
+import { useAppSelector } from "@/redux/hooks"
+import { selectCurrentUser } from "@/redux/features/auth/authSlice"
 
 const Navbar = () => {
   const path = usePathname()
+  const user = useAppSelector(selectCurrentUser)
+
   return (
     <div className="absolute w-full flex z-20 justify-between items-end px-[5vw] py-4">
         <div>
@@ -23,9 +27,9 @@ const Navbar = () => {
         <div className="flex items-center gap-24">
 
         <div className="md:flex hidden items-center text-lg gap-8 ">
-            <Link href={"/"} className="group cursor-pointer "><p>Home</p> <div className="bg-black h-[2px] w-0 group-hover:w-full duration-500 "/></Link>
-            <Link href={"/about"} className="group cursor-pointer "><p>About</p> <div className="bg-black h-[2px] w-0 group-hover:w-full duration-500"/></Link>
-            <Link href={"/"} className="group cursor-pointer "><p>Medicines</p> <div className="bg-black h-[2px] w-0 group-hover:w-full duration-500"/></Link>
+            <Link href={"/"} className="group cursor-pointer "><p>Home</p> <div className={`bg-black h-[2px]  duration-500 ${path === "/" ? 'w-full':'w-0 group-hover:w-full'}`}/></Link>
+            <Link href={"/about"} className="group cursor-pointer "><p>About</p> <div className={`bg-black h-[2px]  duration-500 ${path === "/about" ? 'w-full':'w-0 group-hover:w-full'}`}/></Link>
+            <Link href={"/all-medicines"} className="group cursor-pointer "><p>Medicines</p> <div className={`bg-black h-[2px]  duration-500 ${path === "/all-medicines" ? 'w-full':'w-0 group-hover:w-full'}`}/></Link>
         </div>
         <Drawer direction="left">
         <DrawerTrigger>
@@ -34,7 +38,7 @@ const Navbar = () => {
         <DrawerContent className="max-w-[50vw] md:max-w-[20vw]">
             <DrawerTitle/>
             <DrawerDescription/>
-            <MobileNavigation/>
+            <MobileNavigation user={user}/>
         </DrawerContent>
         </Drawer>
         </div>

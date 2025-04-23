@@ -24,6 +24,9 @@
 .text-dark{
     color: #1A2B13;
 }
+.bg-main{
+    background-color: #D0AD87;
+}
 
 .font-heading {
     font-family: "Poiret One", sans-serif;

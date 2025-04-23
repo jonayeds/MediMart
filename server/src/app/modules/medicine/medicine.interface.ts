@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+
 import { TMedicineCategory } from "./medicine.constant";
 
 export interface IMedicine{

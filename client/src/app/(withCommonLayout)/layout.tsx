@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/app/globals.css";
 import Navbar from "@/components/shared/Navbar";
 import ReduxProvider from "@/components/providers/ReduxProvider";
 

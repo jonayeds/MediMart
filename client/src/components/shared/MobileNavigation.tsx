@@ -1,19 +1,29 @@
 import Image from "next/image"
 import logo from "@/assets/svgs/MediMartLogo.svg"
 import Link from "next/link"
-const MobileNavigation = () => {
+import { IAuthUser } from "@/redux/features/auth/authSlice"
+const MobileNavigation = ({user}:{user:IAuthUser | null}) => {
   return (
     <div className="px-4">
         <Link href={"/"}>
         <Image src={logo} alt="MediMart" width={200} height={100} className="mx-auto mt-10 md:w-[15vw] w-[40vw]" />
         </Link>
         <hr className="border-1 border-gray-200 my-4" />
-        <div className="flex gap-y-2 flex-col md:px-[7vw] px-0">
-            <Link href={"/"} className="md:hidden">Home</Link>
-            <Link href={"/about"} className="md:hidden ">About Us</Link>
-            <Link href={"/all-medicines"} className="md:hidden">All Medicines</Link>
-            <Link href={"/register"} className="">Register</Link>
-            <Link href={"/login"} className="">Login</Link>
+        <div className="flex gap-y-2 flex-col md:px-[4vw] px-0">
+            <Link href={"/"} className="md:hidden hover:bg-gray-100 py-1 rounded-lg px-4">Home</Link>
+            <Link href={"/about"} className="md:hidden hover:bg-gray-100 py-1 rounded-lg px-4">About Us</Link>
+            <Link href={"/all-medicines"} className="md:hidden hover:bg-gray-100 py-1 rounded-lg px-4">All Medicines</Link>
+            {
+              user ?
+               <>
+               <Link href={"/profile"} className="hover:bg-gray-100 py-1 rounded-lg px-4">Profile</Link>
+               <Link href={`/dashboard/${user.role}`} className="hover:bg-gray-100 py-1 rounded-lg px-4">Dashboard</Link>
+               </>
+                : <>
+              <Link href={"/register"} className="hover:bg-gray-100 py-1 rounded-lg px-4">Register</Link>
+              <Link href={"/login"} className="hover:bg-gray-100 py-1 rounded-lg px-4">Login</Link>
+              </>
+            }
         </div>
     </div>
   )
