@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
-
-
+import ReduxProvider from "@/components/providers/ReduxProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,15 +15,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`bg-primary`}
-        cz-shortcut-listen="true"
-      >
-        <div className="relative">
-
-        <Navbar/>
-        </div>
-        {children}
+      <body className={`bg-primary`} cz-shortcut-listen="true">
+        <ReduxProvider>
+          <div className="relative">
+            <Navbar />
+          </div>
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );
