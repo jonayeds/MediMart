@@ -9,6 +9,7 @@ export interface IMedicine{
     category:TMedicineCategory;
     symptoms:string[];
     image:string;
+    _id:string;
 }
 
 export type TMedicineCategory = 

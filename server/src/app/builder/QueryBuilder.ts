@@ -58,7 +58,8 @@ class QueryBuilder<T> {
     return {
       total,
       totalPage,
-      page
+      page,
+      searchTerm:this?.query?.searchTerm
     }
   }
 
