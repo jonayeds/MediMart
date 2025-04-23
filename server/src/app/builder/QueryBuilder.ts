@@ -21,9 +21,18 @@ class QueryBuilder<T> {
 
   filter(){
     const queryObj = {...this.query}
-    const excludeFields = ["searchTerm", "sort", "limit", "page", "fields"]
+    const excludeFields = ["searchTerm", "sort", "limit", "page", "fields", "min", "max"]
     excludeFields.forEach(el => delete queryObj[el])
     this.modelQuery = this.modelQuery.find(queryObj)
+    return this
+  }
+
+  range(field:string){
+    const min = Number(this?.query?.min) > 0 ?  this?.query?.min : 0
+    const max = Number(this?.query?.max) > 0 ?  this?.query?.max : 9999
+    this.modelQuery = this.modelQuery.find({
+      [field]:{$gte:Number(min), $lte:Number(max)}
+    })
     return this
   }
 

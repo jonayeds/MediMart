@@ -22,7 +22,6 @@ const MedicineViewer = () => {
         }
         getMedicines()
     },[query])
-
     useEffect(()=>{
         if(searchTerm === query.searchTerm){
             setLoading(false)

@@ -5,7 +5,7 @@ import Link from "next/link"
 const MedicineCard = ({medicine}:{medicine:IMedicine}) => {
   return (
     <Link href={`/medicine-details/${medicine._id}`} className="  relative z-10 group cursor-pointer flex flex-col justify-between">
-        <div className={`absolute w-full h-full -z-10 top-0 group-hover:top-2 duration-500  rounded-md overflow-hidden  bg-cover`} style={{
+        <div className={`absolute w-full h-full -z-10 top-0 group-hover:-top-3 duration-500  rounded-md overflow-hidden  bg-cover`} style={{
             backgroundImage:`url(${medicine?.image || 'https://images.pexels.com/photos/6653040/pexels-photo-6653040.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'})`,
 
         }}><div className="w-full h-full backdrop-blur-3xl "></div></div>

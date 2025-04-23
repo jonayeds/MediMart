@@ -7,7 +7,7 @@ const AllMedicinesPage = () => {
 
   return (
     <div className="container mx-auto px-4 pt-20">
-        <h1 className="text-center font-heading text-[4vw] uppercase">Medicine Inventory</h1>
+        <h1 className="text-center font-heading text-[4vw] mb-8 uppercase">Medicine Inventory</h1>
        <MedicineViewer/>
     </div>
   )

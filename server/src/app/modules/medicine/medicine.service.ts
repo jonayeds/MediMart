@@ -22,6 +22,7 @@ const getAllMedicine = async(query:Record<string,unknown>)=>{
     .sort()
     .filter()
     .paginate()
+    .range("price")
     const meta =await  medicineQuery.countTotal()
 
      const result = await medicineQuery.modelQuery
