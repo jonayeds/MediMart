@@ -1,3 +1,4 @@
+import { RootState } from "@/redux/store";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit"
 
 export interface IAuthUser {
@@ -34,6 +35,9 @@ const authSlice = createSlice({
         }
     }
 })
+
+export const selectCurrentToken = (state: RootState )=>state.auth.token
+export const selectCurrentUser = (state: RootState )=>state.auth.user
 
 export const {setUser, logOut} = authSlice.actions
 

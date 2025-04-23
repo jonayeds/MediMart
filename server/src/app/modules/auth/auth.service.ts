@@ -19,7 +19,7 @@ const loginUser = async(payload:IAuth)=>{
         role:isUserExists.user.role
     }
     const accessToken  =  signJwt(jwtPayload, config.access_secret as string)
-    return {accessToken}
+    return {accessToken, data:isUserExists.user}
 }
 
 export const AuthServices = {

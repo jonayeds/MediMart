@@ -7,6 +7,10 @@ import { Button } from "../ui/button"
 import Link from "next/link"
 import { registerUser } from "@/services/AuthService"
 import {toast} from "sonner"
+import { useRouter } from "next/navigation"
+import { useAppDispatch } from "@/redux/hooks"
+import { setUser } from "@/redux/features/auth/authSlice"
+import { TUserRole } from "@/types/user"
 
 const RegisterForm = () => {
     const form = useForm({
@@ -18,12 +22,22 @@ const RegisterForm = () => {
             password:""
         }
     })
+    const router = useRouter()
+    const dispatch = useAppDispatch()
     const onSubmit:SubmitHandler<FieldValues> = async(data)=>{
         const id = toast.loading("Registering...")
         const result = await registerUser(data)
         console.log(result)
         if(result?.success){
           toast.success(result?.message, {id})
+          dispatch(setUser({user:{
+            email:result.data.data.email as string,
+            role:result.data.data.role as TUserRole,
+            phoneNumber:result.data.phoneNumber as string
+           },
+           token:result.data.accessToken
+          }))
+          router.push("/")
         }else{
           toast.error(result?.errorSources[0].message || result?.message , {id})
         }

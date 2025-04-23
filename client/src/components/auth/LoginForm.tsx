@@ -4,6 +4,11 @@ import { Input } from "@/components/ui/input"
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import { Button } from "../ui/button"
 import Link from "next/link"
+import { toast } from "sonner"
+import { loginUser } from "@/services/AuthService"
+import { useRouter } from "next/navigation"
+import { useAppDispatch } from "@/redux/hooks"
+import { setUser } from "@/redux/features/auth/authSlice"
 
 const LoginForm = () => {
     const form = useForm({
@@ -12,8 +17,27 @@ const LoginForm = () => {
             password:""
         }
     })
+    const dispatch = useAppDispatch()
+    const router = useRouter()
     const onSubmit:SubmitHandler<FieldValues> = async(data)=>{
-        console.log(data)
+      const id = toast.loading("Logging in...")
+      const result = await loginUser(data)
+      console.log(result)
+      if(result?.success){
+        toast.success(result.message, {id})
+        const {data:user} = result
+        dispatch(setUser({
+           user:{
+            email:user?.data.email,
+            role:user?.data.role,
+            phoneNumber:user?.data.phoneNumber
+           },
+           token:user?.accessToken
+        }))
+        router.push("/")
+      }else{
+        toast.error(result?.errorSources[0]?.message || result?.message , {id})
+      }
     }
   return (
     <Form {...form}>
