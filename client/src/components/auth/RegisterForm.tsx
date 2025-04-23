@@ -5,6 +5,8 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import { Textarea } from "../ui/textarea"
 import { Button } from "../ui/button"
 import Link from "next/link"
+import { registerUser } from "@/services/AuthService"
+import {toast} from "sonner"
 
 const RegisterForm = () => {
     const form = useForm({
@@ -17,7 +19,14 @@ const RegisterForm = () => {
         }
     })
     const onSubmit:SubmitHandler<FieldValues> = async(data)=>{
-        console.log(data)
+        const id = toast.loading("Registering...")
+        const result = await registerUser(data)
+        console.log(result)
+        if(result?.success){
+          toast.success(result?.message, {id})
+        }else{
+          toast.error(result?.errorSources[0].message || result?.message , {id})
+        }
     }
   return (
     <Form {...form}>

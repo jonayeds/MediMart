@@ -25,7 +25,6 @@ const userSchema = new Schema<IUser, IUserModel>({
     },
     profileImage:{
         type:String,
-        required:true
     },
     role:{
         type:String,
