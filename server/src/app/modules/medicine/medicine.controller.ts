@@ -44,10 +44,22 @@ const updateMedicine = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getASingleMedicine = catchAsync(async (req, res) => {
+  const result = await MedicineServices.getASingleMedicine(
+    req.params.medicineId,
+  );
+  sendResponse(res, {
+    success: true,
+    message: "Successfully Fetched Medicine",
+    statusCode: 200,
+    data: result,
+  });
+});
 
 export const MedicineControllers = {
   createMedicine,
   getAllMedicine,
   deleteMedicine,
   updateMedicine,
+  getASingleMedicine
 };

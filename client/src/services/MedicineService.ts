@@ -9,3 +9,10 @@ export const getAllMedicines = async(query:Record<string, unknown> ={})=>{
     const res = await result.json()
     return res
 }
+export const getASingleMedicine = async(medicineId:string)=>{
+    const result = await fetch(`${process.env.SERVER_URL}/medicine/${medicineId}`,{
+        method:"GET",
+    })
+    const res = await result.json()
+    return res
+}

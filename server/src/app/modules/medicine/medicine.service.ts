@@ -29,6 +29,11 @@ const getAllMedicine = async(query:Record<string,unknown>)=>{
      return {data:result, meta}
     
 }
+const getASingleMedicine = async(medicineId:string)=>{
+    const result = await Medicine.findById(medicineId)
+    return result
+    
+}
 
 const deleteMedicine = async(medicineId:string)=>{
     const isMedicineExists = await Medicine.findById(medicineId)
@@ -54,5 +59,6 @@ export const MedicineServices = {
     createMedicine,
     getAllMedicine,
     deleteMedicine,
-    updateMedicine
+    updateMedicine,
+    getASingleMedicine
 }
