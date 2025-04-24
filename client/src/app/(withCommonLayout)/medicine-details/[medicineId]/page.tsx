@@ -1,13 +1,16 @@
+import AddtoCartComponent from "@/components/cart/AddToCart";
 import { Button } from "@/components/ui/button"
 import { getASingleMedicine } from "@/services/MedicineService"
 import { IMedicine } from "@/types/medicine"
 import Image from "next/image"
-import { MdAddShoppingCart as CartIcon } from "react-icons/md";
+
 
 const MedicineDetailPage = async({ params }: { params:Promise<{ medicineId: string }> }) => {
     const medicineId = (await params).medicineId
     const data = await getASingleMedicine(medicineId)
     const medicine:IMedicine = data?.data
+    
+
   return (
     <div className="container mx-auto px-8 pt-20 ">
         <div className="grid md:grid-cols-2  justify-center md:flex-row  flex-col  md:items-start gap-8">
@@ -21,7 +24,7 @@ const MedicineDetailPage = async({ params }: { params:Promise<{ medicineId: stri
                 <p className={`text-3xl ${medicine.stock === 0 ?'line-through text-gray-400':'text-dark'}`}>$${medicine.price}</p>
                 <div className="flex items-center gap-2">
 
-                <Button variant={"outline"} className="hover:text-white hover:bg-[#1A2B13]">Add to Cart <CartIcon/> </Button>
+                <AddtoCartComponent medicine={medicine}/>
                 <Button  className="hover:text-white">Buy Now </Button>
                 </div>
             </div>
