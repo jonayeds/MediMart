@@ -7,6 +7,7 @@ import { DialogClose } from '../ui/dialog'
 import { Button } from '../ui/button'
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form'
 import { MedicineCategories } from '@/types/medicine'
+import { TbAdjustmentsCancel } from "react-icons/tb";
 
 export type TFilterValues = {min:string,max:string, category:string}
 
@@ -24,6 +25,16 @@ const FilterMedicineForm = ({setQuery, filter, setFilter}:{setQuery:Dispatch<Set
             queryObj.max = data.max || 9999
         setFilter(data as TFilterValues)
         setQuery(prev=> ({...prev, ...queryObj}))
+    }
+    const clearFilter = ()=>{
+      setQuery(prev=>{
+        const queryObj = {...prev}
+        delete queryObj.category
+        delete queryObj.min
+        delete queryObj.max
+        return (queryObj)
+      })
+      setFilter({category:"", max:"", min:""})
     }
   return (
     <Form {...form}>
@@ -92,10 +103,15 @@ const FilterMedicineForm = ({setQuery, filter, setFilter}:{setQuery:Dispatch<Set
             )}
             />
             </div>
-           
+           <div className='flex items-center gap-2 justify-center w-max mx-auto'>
+
             <DialogClose className=" max-w-max mx-auto" asChild>
               <Button  type="submit" className="border border-gray-300">Filter</Button>
             </DialogClose>
+            <DialogClose className=" max-w-max mx-auto" asChild>
+              <Button onClick={clearFilter}   className="border border-gray-300">Clear Filter <TbAdjustmentsCancel /></Button>
+            </DialogClose>
+           </div>
             </form>
       </Form>
   )
