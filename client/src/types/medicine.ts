@@ -10,6 +10,8 @@ export interface IMedicine{
     symptoms:string[];
     image:string;
     _id:string;
+    createdAt:string;
+    updatedAt:string;
 }
 
 export type TMedicineCategory = 
