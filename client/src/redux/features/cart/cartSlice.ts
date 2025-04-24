@@ -35,7 +35,20 @@ const cartSlice = createSlice({
             }
         },
         removeFromCart :(state, action:PayloadAction<string>)=>{
-            state.filter(m=> m.medicine._id !== action.payload )
+            return state.filter(m=> {
+                console.log(m.medicine._id !== action.payload)
+                return m.medicine._id !== action.payload
+            } )
+            
+        },
+        updateQuantity:(state, action:PayloadAction<{medicineId:string, quantity:number}>)=>{
+            const cart = state.map(m=> {
+                if(m.medicine._id === action.payload.medicineId){
+                    m.quantity = action.payload.quantity
+                }
+                return m
+            })
+            state = cart
         }
     }
 })
@@ -43,6 +56,6 @@ const cartSlice = createSlice({
 
 export const selectCart = (state: RootState )=>state.cart
 
-export const {addToCart, removeFromCart} = cartSlice.actions
+export const {addToCart, removeFromCart, updateQuantity} = cartSlice.actions
 
 export default cartSlice.reducer
