@@ -1,8 +1,17 @@
 import Image from "next/image"
 import logo from "@/assets/svgs/MediMartLogo.svg"
 import Link from "next/link"
-import { IAuthUser } from "@/redux/features/auth/authSlice"
-const MobileNavigation = ({user}:{user:IAuthUser | null}) => {
+import { Button } from "../ui/button"
+import { IUser } from "@/types/user"
+import { useAppDispatch } from "@/redux/hooks"
+import { logOut } from "@/redux/features/auth/authSlice"
+import { logoutUser } from "@/services/AuthService"
+const MobileNavigation = ({user}:{user:IUser | null}) => {
+  const dispatch = useAppDispatch()
+  const handleLogout = async()=>{
+    dispatch(logOut())
+    await logoutUser()
+  }
   return (
     <div className="px-4">
         <Link href={"/"}>
@@ -18,6 +27,8 @@ const MobileNavigation = ({user}:{user:IAuthUser | null}) => {
                <>
                <Link href={"/profile"} className="hover:bg-gray-100 py-1 rounded-lg px-4">Profile</Link>
                <Link href={`/dashboard/${user.role}`} className="hover:bg-gray-100 py-1 rounded-lg px-4">Dashboard</Link>
+               <hr className="border border-gray-300 my-2" />
+               <Button onClick={handleLogout}  className="hover:bg-gray-100 py-1 rounded-lg px-4">Logout</Button>
                </>
                 : <>
               <Link href={"/register"} className="hover:bg-gray-100 py-1 rounded-lg px-4">Register</Link>

@@ -1,10 +1,14 @@
+"use client"
 import Image from "next/image";
 import highlight from "@/assets/svgs/hero-text-highlight.svg";
 import highlightWhite from "@/assets/svgs/hero-text-highlight-white.svg"
 import { Button } from "../ui/button";
 import { HiArrowLongRight } from "react-icons/hi2";
 import Link from "next/link";
+import { useAppSelector } from "@/redux/hooks";
+import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 const HeroSection = () => {
+  const user = useAppSelector(selectCurrentToken)
   return (
     <div className="bg-hero md:min-h-screen min-h-[105vh] flex relative rounded-b-3xl md:rounded-b-none">
       <div className="md:hidden absolute h-full w-full bg-[#02020265] rounded-b-3xl " />
@@ -38,9 +42,12 @@ const HeroSection = () => {
             priority.
           </p>
           <div className="mt-4 flex items-center gap-4">
-            <Link href={"/register"}>
-            <Button className="rounded-full ">Register</Button>
-            </Link>
+            {
+              !user &&  <Link href={"/register"}>
+              <Button className="rounded-full ">Register</Button>
+              </Link>
+            }
+           
             <Link href={"/all-medicines"}>
             <Button variant={"outline"} className="rounded-full ">View All Medicines <HiArrowLongRight /></Button>
             </Link>

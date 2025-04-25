@@ -42,7 +42,7 @@ export const loginUser = async(payload:FieldValues)=>{
 
 export const getUserFromCookies = async ()=>{
     const token  = (await cookies()).get("accessToken")?.value
-    
+
     const res = await fetch(`${process.env.SERVER_URL}/user/get-me`,{
         headers:{
             "Authorization": token as unknown as string
@@ -54,4 +54,8 @@ export const getUserFromCookies = async ()=>{
     }else{
         return null
     }
+}
+
+export const logoutUser = async()=>{
+    (await cookies()).delete("accessToken")
 }

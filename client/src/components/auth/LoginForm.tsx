@@ -27,11 +27,7 @@ const LoginForm = () => {
         toast.success(result.message, {id})
         const {data:user} = result
         dispatch(setUser({
-           user:{
-            email:user?.data.email,
-            role:user?.data.role,
-            phoneNumber:user?.data.phoneNumber
-           },
+           user:user.data,
            token:user?.accessToken
         }))
         router.push("/")

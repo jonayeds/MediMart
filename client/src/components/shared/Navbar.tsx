@@ -11,6 +11,7 @@ import { useAppSelector } from "@/redux/hooks"
 import { selectCurrentUser } from "@/redux/features/auth/authSlice"
 import { BsCart2 as CartIcon } from "react-icons/bs";
 import { selectCart } from "@/redux/features/cart/cartSlice"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 const Navbar = () => {
   const path = usePathname()
@@ -43,6 +44,14 @@ const Navbar = () => {
           <span className={`absolute -bottom-1 -right-[14px] bg-dark text-white rounded-full w-4 h-4 text-xs flex justify-center items-center ${totalMedicine>0 ? '': "hidden"}`}>{totalMedicine}</span>
           <CartIcon className="text-2xl"/>
           </Link>
+          {
+            user && <Link href={"/profile"} className="md:flex hidden">
+            <Avatar>
+    <AvatarImage src={user?.profileImage} />
+    <AvatarFallback className="bg-dark text-white">{user?.name?.split(" ").map(n=> n.charAt(0)).join("")}</AvatarFallback>
+  </Avatar>
+            </Link>
+          }
         <Drawer direction="left">
         <DrawerTrigger>
         <CgMenuRight className={`${path === "/" ? 'text-white md:text-black': 'text-black' } text-4xl  cursor-pointer`} />
