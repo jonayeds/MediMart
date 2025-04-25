@@ -39,3 +39,19 @@ export const loginUser = async(payload:FieldValues)=>{
         console.log(error)
     }
 }
+
+export const getUserFromCookies = async ()=>{
+    const token  = (await cookies()).get("accessToken")?.value
+    
+    const res = await fetch(`${process.env.SERVER_URL}/user/get-me`,{
+        headers:{
+            "Authorization": token as unknown as string
+        }
+    })
+    const user = await res.json()
+    if(user?.success){
+        return user.data
+    }else{
+        return null
+    }
+}
