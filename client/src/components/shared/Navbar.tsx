@@ -42,7 +42,7 @@ const Navbar = () => {
         <div className="flex items-center  gap-8">
           <Link href={"/my-cart"} className="relative">
           <span className={`absolute -bottom-1 -right-[14px] bg-dark text-white rounded-full w-4 h-4 text-xs flex justify-center items-center ${totalMedicine>0 ? '': "hidden"}`}>{totalMedicine}</span>
-          <CartIcon className="text-2xl"/>
+          <CartIcon className={`text-2xl ${path === "/" ? 'text-white md:text-black': 'text-black' }`}/>
           </Link>
           {
             user && <Link href={"/profile"} className="md:flex hidden">

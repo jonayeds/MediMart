@@ -5,7 +5,8 @@ import { IUser } from "./types/user";
 const privateRoutes: {customer:string[], admin:string[]} = {
     customer: [
       "/my-cart",
-      "/checkout"
+      "/checkout",
+      "/profile"
     ],
     admin: [
         

@@ -26,6 +26,7 @@ const orderSchema = new Schema<IOrder>({
     },
     paymentSession:{
         type:String,
+        default:"pending"
     },
     prescription:{
         type:String,
