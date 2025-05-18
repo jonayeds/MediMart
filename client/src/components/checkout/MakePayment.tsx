@@ -6,14 +6,16 @@ import { placeOrder } from "@/services/OrderService"
 import { toast } from "sonner"
 
 const PlaceOrder = () => {
-    const id = toast.loading("Placing order...")
     const cart = useAppSelector(selectCart)
-    const medicines = cart.map(m=> ({medicine:m.medicine._id, quantity:m.quantity}))
     const handlePlaceOrder = async()=>{
+        const id = toast.loading("Placing order...")
+        const medicines = cart.map(m=> ({medicine:m.medicine._id, quantity:m.quantity}))
         const order = {
             medicines,
         }
+        console.log(order)
         const result = await placeOrder(order)
+        console.log(result)
         if(result.success){
             toast.success(result.message, {id})
         }else{
