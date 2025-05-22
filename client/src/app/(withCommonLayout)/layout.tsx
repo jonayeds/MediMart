@@ -1,28 +1,15 @@
-import type { Metadata } from "next";
-import "@/app/globals.css";
 import Navbar from "@/components/shared/Navbar";
-import ReduxProvider from "@/components/providers/ReduxProvider";
+import React from "react";
 
-export const metadata: Metadata = {
-  title: "MediMart",
-  description: "Medicine Store",
+const CommonLayout = ({children}:Readonly<{
+  children: React.ReactNode;
+}>) => {
+  return (
+    <div className="relative">
+      <Navbar />
+      {children}
+    </div>
+  );
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body className={`bg-primary`} cz-shortcut-listen="true">
-        <ReduxProvider>
-          <div className="relative">
-            <Navbar />
-          </div>
-          {children}
-        </ReduxProvider>
-      </body>
-    </html>
-  );
-}
+export default CommonLayout;

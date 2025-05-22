@@ -12,11 +12,10 @@ const PlaceOrder = () => {
     const cart = useAppSelector(selectCart)
     let isPrescriptionRequired = false
     const [prescriptionFile, setPrescriptionFile] = useState<File | null>(null)
-    cart.forEach(medicine => {
+    cart.forEach((medicine) => {
         if (medicine.medicine.prescriptionRequired) {
             isPrescriptionRequired = true
         }
-
     })
     const handlePlaceOrder = async()=>{
         const id = toast.loading("Placing order...")
@@ -50,7 +49,7 @@ const PlaceOrder = () => {
             
             </>
         }
-    <Button  onClick={handlePlaceOrder}  className=" ">Pay Now</Button>
+    <Button  onClick={handlePlaceOrder} disabled={isPrescriptionRequired && !prescriptionFile}  className=" disabled:cursor-not-allowed disabled:line-through">Confirm Order</Button>
     </div>
   )
 }
