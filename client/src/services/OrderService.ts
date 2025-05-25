@@ -1,5 +1,6 @@
 "use server"
 import { IOrder } from "@/types/order"
+import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
 
 export const placeOrder = async(payload:Partial<IOrder>)=>{
@@ -23,9 +24,25 @@ export const getMyOrders = async()=>{
             "Authorization": token as string,
             "Content-Type": "application/json"
         },
-        method:"GET"
+        method:"GET",
+        next:{
+            tags:["cancel-order"]
+        }
     })
     const res = await result.json()
     return res  
+}
+
+export const cancelOrder =async(orderId:string)=>{
+    const token = (await cookies()).get("accessToken")?.value
+    const result = await fetch(`${process.env.SERVER_URL}/order/cancel-order/${orderId}`, {
+        headers:{
+            "Authorization": token as string,
+        },
+        method:"DELETE"
+    })
+    revalidateTag("cancel-order")
+    const res = await result.json()
+    return res              
 }
 

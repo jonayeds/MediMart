@@ -6,6 +6,7 @@ const MyOrdersPage = async() => {
     const {data:orders} = await getMyOrders()
   return (
     <div>
+      <h1 className="text-center font-heading text-[4vw] mb-8 uppercase">My Orders</h1>
         <DataTable columns={orderCols} data={orders}/>
     </div>
   )

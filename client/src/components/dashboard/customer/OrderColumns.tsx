@@ -1,8 +1,11 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
+import { cancelOrder } from "@/services/OrderService"
 import { IOrder } from "@/types/order"
 import { ColumnDef, Row } from "@tanstack/react-table"
 import Image from "next/image"
+import { toast } from "sonner"
 export const orderCols : ColumnDef<IOrder>[] = [
     {
         accessorKey: "medicines",
@@ -43,6 +46,18 @@ export const orderCols : ColumnDef<IOrder>[] = [
                 </a>
             )
         }                      
+    },
+    {
+        accessorKey: "action",
+        header: "Action",
+        cell: ({ row }) => {
+           if(row.original.status === "delivered"){
+                return <ReviewMedicines />
+           }
+           if(row.original.status === "pending" ){
+                return <CancelOrder orderId={row.original._id} />
+           }
+        }                      
     }
 ]
 
@@ -68,5 +83,26 @@ export const MedicinesCol = ({row}:{row:Row<IOrder>})=>{
             ))
                 }
             </div>)
+}
+
+const ReviewMedicines =()=>{
+    return (
+        <Button>Review</Button>
+    )
+}
+const CancelOrder =({orderId}:{orderId:string})=>{
+    const handleCancel = async () => {
+        const id = toast.loading("Cancelling order...")
+        const result = await cancelOrder(orderId)
+        if (result.success){
+            toast.success("Order cancelled successfully", {id})   
+        }
+    else {
+            toast.error("Failed to cancel order",{id})
+        }    
+    }
+    return (
+        <Button onClick={handleCancel} variant="destructive">Cancel</Button>
+    )
 }
 
