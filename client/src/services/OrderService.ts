@@ -15,3 +15,17 @@ export const placeOrder = async(payload:Partial<IOrder>)=>{
     const res = await result.json()
     return res
 }
+
+export const getMyOrders = async()=>{
+    const token = (await cookies()).get("accessToken")?.value
+    const result = await fetch(`${process.env.SERVER_URL}/order/my-orders`, {
+        headers:{
+            "Authorization": token as string,
+            "Content-Type": "application/json"
+        },
+        method:"GET"
+    })
+    const res = await result.json()
+    return res  
+}
+

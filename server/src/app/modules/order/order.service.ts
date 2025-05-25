@@ -86,7 +86,7 @@ const updateOrderStatus = async (status: TOrderStatus, orderId: string) => {
 };
 
 const getMyOrders = async(user:IReqUser)=>{
-    const result = await Order.find({customer:user._id})
+    const result = await Order.find({customer:user._id}).populate("medicines.medicine")
     return result
 }
 

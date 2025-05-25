@@ -1,4 +1,6 @@
-export interface IMedicines {medicine:string, quantity:number}
+import { IMedicine } from "./medicine";
+
+export interface IMedicines {medicine:IMedicine, quantity:number}
 
 export type TOrderStatus = "pending" | "processing" | "shipped" | "delivered" | "rejected"
 
