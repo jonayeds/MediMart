@@ -31,6 +31,7 @@ export const loginUser = async(payload:FieldValues)=>{
             }
         })
         const res = await result.json()
+        console.log(res)
         if(res.success){
             (await cookies()).set("accessToken", res.data.accessToken)
         }

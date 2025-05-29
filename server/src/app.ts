@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from "express"
+import express, { Application, NextFunction, Request, Response } from "express"
 import cors from "cors"
 import router from "./app/routes"
 import { errorHandler } from "./app/middlewares/globalErrorHandler"
@@ -13,7 +13,10 @@ app.use(cors({
 app.use(express.json())
 
 // application routes
-app.use("/api/v1",router)
+app.use("/api/v1",(req, res,next:NextFunction)=>{
+    console.log(req.body)
+    next()
+} , router)
 
 app.get("/api/v1", (req:Request, res:Response)=>{
     res.send("MediMart is running 🏃🏼‍♂️‍➡️")
