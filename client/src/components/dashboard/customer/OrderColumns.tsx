@@ -57,6 +57,7 @@ export const orderCols : ColumnDef<IOrder>[] = [
            if(row.original.status === "pending" ){
                 return <CancelOrder orderId={row.original._id} />
            }
+           
         }                      
     }
 ]
@@ -102,7 +103,7 @@ const CancelOrder =({orderId}:{orderId:string})=>{
         }    
     }
     return (
-        <Button onClick={handleCancel} variant="destructive">Cancel</Button>
+        <Button onClick={handleCancel} variant={"destructive"}  className="bg-red-500 border-none hover:bg-red-700 duration-300 hover:text-white">Cancel</Button>
     )
 }
 

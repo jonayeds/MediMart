@@ -20,6 +20,7 @@ const MedicineDetailPage = async({ params }: { params:Promise<{ medicineId: stri
                 <p>Category: {medicine.category}</p>
                 <p className="font-extralight">Cure for : {medicine.symptoms.join(" | ")}</p>
                 <p>Manufacturer: {medicine.manufacturer}</p>
+                <p>{medicine.prescriptionRequired? <span className="bg-yellow-500 text-white p-1 rounded-lg">Prescription Required</span>: <span className="bg-green-600 text-white p-1 rounded-lg">No Prescription Required</span>}</p>
                 <p className="text-lg">Stock: {medicine.stock}</p>
                 <p className={`text-3xl ${medicine.stock === 0 ?'line-through text-gray-400':'text-dark'}`}>$${medicine.price}</p>
                 <div className="flex items-center gap-2">
