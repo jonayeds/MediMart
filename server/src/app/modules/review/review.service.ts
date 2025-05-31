@@ -11,6 +11,12 @@ const createReview = async (reviewData:IReview) => {
     return result
 }
 
+const getMyReviews = async(customerId:string)=>{
+    const result = await Review.find({customer: customerId})    
+    return result
+}
+
 export const ReviewServices = {
     createReview,
+    getMyReviews
 }

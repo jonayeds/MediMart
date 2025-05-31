@@ -4,6 +4,9 @@ import { AiFillShopping as OrderIcon } from "react-icons/ai";
 import { MdPerson2 as ProfileIcon } from "react-icons/md";
 import { MdOutlineRateReview as ReviewIcon } from "react-icons/md";
 import { IoMdHome as HomeIcon } from "react-icons/io";
+import { GiShoppingBag as AllOrdersIcon } from "react-icons/gi";
+import { RiMedicineBottleFill as MEdicineIcon } from "react-icons/ri";
+import { MdInventory as StockIcon } from "react-icons/md";
 import { useAppSelector } from "@/redux/hooks";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { ElementType } from "react";
@@ -31,8 +34,9 @@ const AdminNavigation = () => {
   return (
     <>
       <Navigator route="/" Icon={HomeIcon} />
-      <Navigator route="/dashboard/customer/my-orders" Icon={OrderIcon} />
-      <Navigator route="/dashboard/customer/my-reviews" Icon={ReviewIcon} />
+      <Navigator route="/dashboard/customer/add-medicine" Icon={MEdicineIcon} />
+      <Navigator route="/dashboard/customer/my-orders" Icon={AllOrdersIcon} />
+      <Navigator route="/dashboard/customer/update-medicines" Icon={StockIcon} />
       <Navigator route="/dashboard/customer/profile" Icon={ProfileIcon} />
     </>
   );

@@ -12,7 +12,17 @@ const createReview = catchAsync(async(req,res)=>{
         data: result    
     })
 })
+const getMyReviews = catchAsync(async(req,res)=>{
+    const result = await ReviewServices.getMyReviews(req.user?._id as string);
+    sendResponse(res,{
+        statusCode: 200,
+        success: true,
+        message: "Fetched My Reviews successfully",
+        data: result    
+    })
+})
 
 export const ReviewControllers = {
-    createReview
+    createReview,
+    getMyReviews
 }
