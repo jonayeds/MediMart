@@ -33,6 +33,20 @@ export const getMyOrders = async()=>{
     return res  
 }
 
+export const getDeleveredOrders = async()=>{
+    const token = (await cookies()).get("accessToken")?.value
+    const result = await fetch(`${process.env.SERVER_URL}/order/my-orders`, {
+        headers:{
+            "Authorization": token as string,
+            "Content-Type": "application/json"
+        },
+        method:"GET",
+
+    })
+    const res = await result.json()
+    return res 
+}
+
 export const cancelOrder =async(orderId:string)=>{
     const token = (await cookies()).get("accessToken")?.value
     const result = await fetch(`${process.env.SERVER_URL}/order/cancel-order/${orderId}`, {
@@ -46,3 +60,15 @@ export const cancelOrder =async(orderId:string)=>{
     return res              
 }
 
+export const getAllOrders = async()=>{
+    const token = (await cookies()).get("accessToken")?.value
+    const result = await fetch(`${process.env.SERVER_URL}/order/all-orders`, {
+        headers:{
+            "Authorization": token as string,
+            "Content-Type": "application/json"
+        },
+        method:"GET"
+    })
+    const res = await result.json()
+    return res              
+}

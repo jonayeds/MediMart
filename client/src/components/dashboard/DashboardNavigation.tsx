@@ -34,10 +34,10 @@ const AdminNavigation = () => {
   return (
     <>
       <Navigator route="/" Icon={HomeIcon} />
-      <Navigator route="/dashboard/customer/add-medicine" Icon={MEdicineIcon} />
-      <Navigator route="/dashboard/customer/my-orders" Icon={AllOrdersIcon} />
-      <Navigator route="/dashboard/customer/update-medicines" Icon={StockIcon} />
-      <Navigator route="/dashboard/customer/profile" Icon={ProfileIcon} />
+      <Navigator route="/dashboard/admin/add-medicine" Icon={MEdicineIcon} />
+      <Navigator route="/dashboard/admin/all-orders" Icon={AllOrdersIcon} />
+      <Navigator route="/dashboard/admin/update-medicines" Icon={StockIcon} />
+      <Navigator route="/dashboard/admin/profile" Icon={ProfileIcon} />
     </>
   );
 };

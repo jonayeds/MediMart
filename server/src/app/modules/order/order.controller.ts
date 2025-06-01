@@ -26,7 +26,7 @@ const updateOrderStatus = catchAsync(async(req,res)=>{
 })
 
 const getMyOrders = catchAsync(async(req,res)=>{
-    const result  = await OrdeServices.getMyOrders(req.user as IReqUser)
+    const result  = await OrdeServices.getMyOrders(req.user as IReqUser, req.query)
     sendResponse(res,{
         data:result,
         success:true,

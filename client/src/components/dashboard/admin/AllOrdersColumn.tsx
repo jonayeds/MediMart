@@ -1,12 +1,13 @@
 "use client"
 
+
+
 import { Button } from "@/components/ui/button"
-import { cancelOrder } from "@/services/OrderService"
 import { IOrder } from "@/types/order"
 import { ColumnDef, Row } from "@tanstack/react-table"
 import Image from "next/image"
-import { toast } from "sonner"
-export const orderCols : ColumnDef<IOrder>[] = [
+
+export const allOrderCols : ColumnDef<IOrder>[] = [
     {
         accessorKey: "medicines",
         header: "Medicines",
@@ -51,12 +52,10 @@ export const orderCols : ColumnDef<IOrder>[] = [
         accessorKey: "action",
         header: "Action",
         cell: ({ row }) => {
-           if(row.original.status === "delivered"){
-                return <ReviewMedicines />
+           if(row.original.status === "pending"){
+                return <ActionCol row={row} />
            }
-           if(row.original.status === "pending" ){
-                return <CancelOrder orderId={row.original._id} />
-           }
+           
            
         }                      
     }
@@ -64,15 +63,15 @@ export const orderCols : ColumnDef<IOrder>[] = [
 
 
 
-export const MedicinesCol = ({row}:{row:Row<IOrder>})=>{
-         console.log("MedicinesCol", row.original.medicines)    
+export const MedicinesCol = ({row}:{row:Row<IOrder>})=>{ 
+    console.log("MedicinesCol", row.original.medicines)             
     return (<div className="flex flex-col gap-2">   
                 {
-                    row.original.medicines.map((med) => (
-                <div key={med.medicine._id} className="flex items-center gap-2 ">
+                    row.original.medicines.map((med, index) => (
+                <div key={med.medicine._id || `medicine-${index}`} className="flex items-center gap-2 ">
                     <Image
                         src={med.medicine.image || "https://images.pexels.com/photos/6653040/pexels-photo-6653040.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"}
-                        alt={med.medicine.name}
+                        alt={med.medicine.name || "Medicine Image"} 
                         width={50}
                         height={50}
                         className="rounded-full  w-8 h-8"
@@ -86,24 +85,16 @@ export const MedicinesCol = ({row}:{row:Row<IOrder>})=>{
             </div>)
 }
 
-const ReviewMedicines =()=>{
+
+const ActionCol = ({row}:{row:Row<IOrder>})=>{
     return (
-        <Button>Review</Button>
-    )
+        <div className="flex items-center gap-2">
+            <Button>Reject</Button>
+            <Button>Ship</Button>
+        </div>
+    )               
 }
-const CancelOrder =({orderId}:{orderId:string})=>{
-    const handleCancel = async () => {
-        const id = toast.loading("Cancelling order...")
-        const result = await cancelOrder(orderId)
-        if (result.success){
-            toast.success("Order cancelled successfully", {id})   
-        }
-    else {
-            toast.error("Failed to cancel order",{id})
-        }    
-    }
-    return (
-        <Button onClick={handleCancel} variant={"destructive"}  className="bg-red-500 border-none hover:bg-red-700 duration-300 hover:text-white">Cancel</Button>
-    )
-}
+
+
+
 
