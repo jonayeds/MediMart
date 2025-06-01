@@ -4,7 +4,7 @@
 
 import { Button } from "@/components/ui/button"
 import { updateOrderStatus } from "@/services/OrderService"
-import { IOrder } from "@/types/order"
+import { IOrder, TOrderStatus } from "@/types/order"
 import { ColumnDef, Row } from "@tanstack/react-table"
 import Image from "next/image"
 import { toast } from "sonner"
@@ -36,6 +36,13 @@ export const allOrderCols : ColumnDef<IOrder>[] = [
         cell: ({ row }) => `₹${row.original.totalPrice}`
     },
     {
+        accessorKey: "payment",
+        header: "Payment",
+        cell: ({ row }) => {
+            return <p className={`${row.original.paymentSession === "pending" ? 'bg-yellow-500':'bg-green-500'} flex p-1 w-max text-white rounded-sm`}>{row.original.paymentSession === "pending"? 'Pending': 'Paid'}</p>
+        }
+    },
+    {
         accessorKey: "prescription",
         header: "Prescription",
         cell: ({ row }) => {
@@ -57,9 +64,17 @@ export const allOrderCols : ColumnDef<IOrder>[] = [
         },
         cell: ({ row }) => {
            if(row.original.status === "pending"){
-                return <ActionCol row={row} />
+                return <div className="flex items-center justify-center gap-2">
+                    <ActionCol orderId={row.original._id} status="rejected" title="Reject"  />
+                    <ActionCol orderId={row.original._id} status="processing" title="Accept"  />
+                </div>
            }
-           
+           if(row.original.status === "processing" ){
+            return <ActionCol orderId={row.original._id} status="shipped" title="Ship"  />
+           }
+              if(row.original.status === "shipped" ){
+                return <ActionCol orderId={row.original._id} status="delivered" title="Deliver"  />
+              }
            
         }                      
     }
@@ -89,29 +104,19 @@ export const MedicinesCol = ({row}:{row:Row<IOrder>})=>{
 }
 
 
-const ActionCol = ({row}:{row:Row<IOrder>})=>{
-    const rejectOrder = async()=>{
-        const id = toast.loading("Rejecting Order...")      
-        const result = await updateOrderStatus(row.original._id, "rejected")
+const ActionCol = ({orderId, status, title}:{orderId:string, status:TOrderStatus,title:string })=>{
+    const handleUpdateStatus = async()=>{
+        const id = toast.loading(`${title}ing Status...`)
+        const result = await updateOrderStatus(orderId, status)
         if(result?.success){
-            toast.success("Order Rejected Successfully", {id})    
+            toast.success(`Order ${status} Successfully"`, {id})     
         }else{
-            toast.error("Could not reject order", {id})   
-        }
-    }
-    const acceptOrder = async()=>{
-        const id = toast.loading("Accepting Order...")
-        const result = await updateOrderStatus(row.original._id, "processing")
-        if(result?.success){
-            toast.success("Order Acccepted Successfully", {id})     
-        }else{
-            toast.error("Could not accept order", {id})   
+            toast.error(`Could not ${title} order`, {id})   
         }        
     }    
     return (
-        <div className="flex justify-center items-center gap-2">
-            <Button onClick={rejectOrder}>Reject</Button>
-            <Button onClick={acceptOrder}>Accept</Button>
+        <div className="flex justify-center ">
+            <Button onClick={handleUpdateStatus}>{title}</Button>
         </div>
     )               
 }
