@@ -67,8 +67,26 @@ export const getAllOrders = async()=>{
             "Authorization": token as string,
             "Content-Type": "application/json"
         },
-        method:"GET"
+        method:"GET",
+        next:{
+            tags:["updateStatus"]   
+        }
     })
     const res = await result.json()
     return res              
+}
+
+export const updateOrderStatus = async(orderId:string, status:string)=>{
+    const token = (await cookies()).get("accessToken")?.value
+    const result = await fetch(`${process.env.SERVER_URL}/order/update-status/${orderId}`, {
+        headers:{
+            "Authorization": token as string,
+            "Content-Type": "application/json"
+        },
+        method:"PATCH",
+        body:JSON.stringify({status})
+    })
+    revalidateTag("updateStatus")
+    const res = await result.json()
+    return res  
 }

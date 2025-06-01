@@ -3,9 +3,11 @@
 
 
 import { Button } from "@/components/ui/button"
+import { updateOrderStatus } from "@/services/OrderService"
 import { IOrder } from "@/types/order"
 import { ColumnDef, Row } from "@tanstack/react-table"
 import Image from "next/image"
+import { toast } from "sonner"
 
 export const allOrderCols : ColumnDef<IOrder>[] = [
     {
@@ -50,7 +52,9 @@ export const allOrderCols : ColumnDef<IOrder>[] = [
     },
     {
         accessorKey: "action",
-        header: "Action",
+        header: ()=>{
+            return <p className="text-center">Action</p>
+        },
         cell: ({ row }) => {
            if(row.original.status === "pending"){
                 return <ActionCol row={row} />
@@ -63,8 +67,7 @@ export const allOrderCols : ColumnDef<IOrder>[] = [
 
 
 
-export const MedicinesCol = ({row}:{row:Row<IOrder>})=>{ 
-    console.log("MedicinesCol", row.original.medicines)             
+export const MedicinesCol = ({row}:{row:Row<IOrder>})=>{             
     return (<div className="flex flex-col gap-2">   
                 {
                     row.original.medicines.map((med, index) => (
@@ -87,10 +90,28 @@ export const MedicinesCol = ({row}:{row:Row<IOrder>})=>{
 
 
 const ActionCol = ({row}:{row:Row<IOrder>})=>{
+    const rejectOrder = async()=>{
+        const id = toast.loading("Rejecting Order...")      
+        const result = await updateOrderStatus(row.original._id, "rejected")
+        if(result?.success){
+            toast.success("Order Rejected Successfully", {id})    
+        }else{
+            toast.error("Could not reject order", {id})   
+        }
+    }
+    const acceptOrder = async()=>{
+        const id = toast.loading("Accepting Order...")
+        const result = await updateOrderStatus(row.original._id, "processing")
+        if(result?.success){
+            toast.success("Order Acccepted Successfully", {id})     
+        }else{
+            toast.error("Could not accept order", {id})   
+        }        
+    }    
     return (
-        <div className="flex items-center gap-2">
-            <Button>Reject</Button>
-            <Button>Ship</Button>
+        <div className="flex justify-center items-center gap-2">
+            <Button onClick={rejectOrder}>Reject</Button>
+            <Button onClick={acceptOrder}>Accept</Button>
         </div>
     )               
 }
