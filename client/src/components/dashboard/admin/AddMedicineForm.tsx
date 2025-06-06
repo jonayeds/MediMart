@@ -30,6 +30,8 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { CalendarIcon, Plus } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
+import { createMedicine } from "@/services/MedicineService";
+import { toast } from "sonner";
 
 const AddMedicineForm = () => {
   const form = useForm({
@@ -48,8 +50,20 @@ const AddMedicineForm = () => {
   });
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const handleCreateMedicine: SubmitHandler<FieldValues> = async (data) => {
+    const id = toast.loading("Creating medicine...");       
     data.symptoms = symptoms;
     console.log(data);
+    data.stock = Number(data.stock);    
+    data.price = Number(data.price);    
+    const result = await createMedicine(data)
+    console.log(result)
+    if (result.success) {
+      form.reset();
+      setSymptoms([]);
+      toast.success("Medicine created successfully", {id});
+    } else {
+      toast.error(result.message || "Failed to create medicine", {id});
+    }       
   };
   const handleAddSymptom = () => {
     const symptom = form.getValues("symptoms");
@@ -265,8 +279,8 @@ const AddMedicineForm = () => {
             </FormItem>
           )}
         />
-        <div className="flex justify-center lg:col-span-3 md:col-span-2">
-          <Button type="submit">Submit</Button>
+        <div className="flex justify-center items-end  lg:col-span-2 col-span-1">
+          <Button type="submit" className="relative md:bottom-2 "> Submit</Button>
         </div>
       </form>
     </Form>
