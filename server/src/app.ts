@@ -14,7 +14,6 @@ app.use(express.json())
 
 // application routes
 app.use("/api/v1",(req, res,next:NextFunction)=>{
-    console.log(req.body)
     next()
 } , router)
 
