@@ -10,9 +10,9 @@ const DashboardLayout = ({children}:Readonly<{
       <div className="md:px-[5vw] px-[8vw]">
       <Image src={logo} width={100} alt="MediMart" height={50} className="md:w-[7vw] w-[25vw] my-4"/>
       </div>
-      <div className="h-[calc(100vh-75px)] bg-primary flex items-start gap-4 pb-2">
+      <div className="h-[calc(100vh-90px)]bg-primary flex items-start gap-4 pb-2">
         <DashboardNavigation/>
-        <div className="bg-white flex-1 h-full rounded-xl p-4 ">{children}</div>
+        <div className="bg-white flex-1  rounded-xl p-4 overflow-y-auto h-[calc(100vh-90px)]">{children}</div>
       </div>
     </div>
   )
