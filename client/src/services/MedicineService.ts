@@ -16,3 +16,15 @@ export const getASingleMedicine = async(medicineId:string)=>{
     const res = await result.json()
     return res
 }
+
+export const updateMedicineStock = async(medicineId:string, stock:number)=>{
+    const result = await fetch(`${process.env.SERVER_URL}/medicine/${medicineId}`,{
+        method:"PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },  
+        body: JSON.stringify({stock}),  
+    })
+    const res = await result.json()
+    return res      
+}

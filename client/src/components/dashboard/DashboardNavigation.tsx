@@ -36,7 +36,7 @@ const AdminNavigation = () => {
       <Navigator route="/" Icon={HomeIcon} />
       <Navigator route="/dashboard/admin/add-medicine" Icon={MEdicineIcon} />
       <Navigator route="/dashboard/admin/all-orders" Icon={AllOrdersIcon} />
-      <Navigator route="/dashboard/admin/update-medicines" Icon={StockIcon} />
+      <Navigator route="/dashboard/admin/manage-medicines" Icon={StockIcon} />
       <Navigator route="/dashboard/admin/profile" Icon={ProfileIcon} />
     </>
   );

@@ -45,15 +45,16 @@ const deleteMedicine = async(medicineId:string)=>{
 }
 
 const updateMedicine = async(medicineId:string, payload:IMedicine)=>{
-    const isMedicineExists = await Medicine.findById(medicineId)
-    if(!isMedicineExists){
-        throw new AppError(404, "Medicine not found")
-    }
     const result = await Medicine.findByIdAndUpdate(medicineId, {
         ...payload
     },{new:true})
+        if(!result){
+        throw new AppError(404, "Medicine not found")
+    }
     return result
 }
+
+
 
 export const MedicineServices = {
     createMedicine,
