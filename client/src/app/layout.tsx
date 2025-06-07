@@ -16,8 +16,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`bg-primary`} cz-shortcut-listen="true">
         <ReduxProvider>
-          <div className="relative">
-          </div>
           {children}
         </ReduxProvider>
       </body>

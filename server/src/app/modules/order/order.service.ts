@@ -152,6 +152,7 @@ const createPayment = async (
   user: IReqUser,
   orderId: string
 ) => {
+  console.log(order)
   const medicines = await Medicine.find({
     $or: order.medicines.map((m) => ({ _id: m.medicine })),
   });

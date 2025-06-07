@@ -10,9 +10,10 @@ export const makePayment = async(productName:string, price:number, customer_emai
     if(product){
         const prices = await stripe.prices.create({
             product:product.id,
-            unit_amount:Math.round(price),
-            currency:"USD"
+            unit_amount:Math.round(price * 100),
+            currency:"usd"
         })
+        console.log(prices, "prices")
     if(prices.id){
         const session = await stripe.checkout.sessions.create({
             line_items:[
@@ -22,7 +23,7 @@ export const makePayment = async(productName:string, price:number, customer_emai
                 }
             ],
             mode:"payment",
-            success_url:`https://localhost:3000/payment-success?session_id={CHECKOUT_SESSION_ID}&order=${orderId}`,
+            success_url:`http://localhost:3000/dashboard/customer/payment-success?session_id={CHECKOUT_SESSION_ID}&order=${orderId}`,
             cancel_url:"http://localhost:3000/payment-failed",
             customer_email
         })

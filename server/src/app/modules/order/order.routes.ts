@@ -14,4 +14,4 @@ router.get("/all-orders", auth(roles.admin), OrderControllers.getAllOrders)
 router.delete("/cancel-order/:orderId", auth(roles.customer), OrderControllers.cancelOrder)
 router.post("/create-payment/:orderId", auth(roles.customer), OrderControllers.createPayment)
 router.post("/verify-payment", auth(roles.customer), OrderControllers.verifyPayment)
-export const OrderRoutes = router
+export const OrderRoutes = router   

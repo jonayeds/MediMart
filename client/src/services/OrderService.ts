@@ -90,3 +90,17 @@ export const updateOrderStatus = async(orderId:string, status:string)=>{
     const res = await result.json()
     return res  
 }
+
+export const createPayment = async(order:IOrder)=>{
+    const token = (await cookies()).get("accessToken")?.value
+    const result = await fetch(`${process.env.SERVER_URL}/order/create-payment/${order._id}`, {
+        headers:{
+            "Authorization": token as string,
+            "Content-Type": "application/json"
+        },
+        body:JSON.stringify(order),
+        method:"POST"
+    })
+    const res = await result.json()
+    return res  
+}
