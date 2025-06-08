@@ -1,12 +1,12 @@
 import { IMedicine } from "./medicine";
 
-export interface IMedicines {medicine:IMedicine, quantity:number}
+export type IMedicines = {medicine:IMedicine| string, quantity:number}[]
 
 export type TOrderStatus = "pending" | "processing" | "shipped" | "delivered" | "rejected"
 
 export interface IOrder {
     _id:string;
-    medicines: IMedicines[];
+    medicines: IMedicines;
     customer:string;
     paymentSession:string;
     status:TOrderStatus;

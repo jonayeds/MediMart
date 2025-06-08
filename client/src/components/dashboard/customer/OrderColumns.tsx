@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { cancelOrder, createPayment } from "@/services/OrderService";
+import { IMedicine } from "@/types/medicine";
 import { IOrder } from "@/types/order";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import Image from "next/image";
@@ -65,22 +66,35 @@ export const orderCols: ColumnDef<IOrder>[] = [
     },
   },
   {
+    accessorKey: "paymentSession",
+    header: "Payment",
+    cell: ({ row }) => {
+      const payment = row.original.paymentSession
+      if (payment === 'pending') {
+        return <span className="text-white bg-yellow-500 px-2 py-1 rounded-md">Pending</span>;
+      }
+      return (
+        <p className="bg-green-500 py-1 px-2 text-white w-max rounded-md">Paid</p>
+      );
+    },
+  },
+  {
     accessorKey: "action",
     header: "Action",
     cell: ({ row }) => {
       if (row.original.status === "delivered") {
         return <ReviewMedicines />;
       }
-      if (row.original.status === "pending") {
+      if (row.original.status === "pending" && row.original.paymentSession === 'pending') {
         return <CancelOrder orderId={row.original._id} />;
       }
     },
   },
   {
-    accessorKey: "paymentSession",
+    accessorKey: "payment",
     header: "Payment",
     cell: ({ row }) => {
-      if (row.original.status === "pending" && row.original.paymentSession) {
+      if (row.original.status === "pending" && row.original.paymentSession === 'pending') {
         return <MakePayment  order={row.original} />;
       }
     },
@@ -88,23 +102,22 @@ export const orderCols: ColumnDef<IOrder>[] = [
 ];
 
 export const MedicinesCol = ({ row }: { row: Row<IOrder> }) => {
-  console.log("MedicinesCol", row.original.medicines);
   return (
     <div className="flex flex-col gap-2">
       {row.original.medicines.map((med) => (
-        <div key={med.medicine._id} className="flex items-center gap-2 ">
+        <div key={(med.medicine as unknown as IMedicine)._id } className="flex items-center gap-2 ">
           <Image
             src={
-              med.medicine.image ||
+              (med.medicine as unknown as IMedicine).image ||
               "https://images.pexels.com/photos/6653040/pexels-photo-6653040.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             }
-            alt={med.medicine.name}
+            alt={(med.medicine as unknown as IMedicine).name}
             width={50}
             height={50}
             className="rounded-full  w-8 h-8"
           />
           <p>
-            {med.medicine.name} ({med.quantity})
+            {(med.medicine as unknown as IMedicine).name} ({med.quantity})
           </p>
         </div>
       ))}

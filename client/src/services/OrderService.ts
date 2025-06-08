@@ -104,3 +104,17 @@ export const createPayment = async(order:IOrder)=>{
     const res = await result.json()
     return res  
 }
+
+export const verifyPayment = async(sessionId:string,orderId:string)=>{
+    const token =  (await cookies()).get("accessToken")?.value  
+    const result = await fetch(`${process.env.SERVER_URL}/order/verify-payment/${orderId}`, {
+        headers:{
+            "Authorization": token as string,
+            "Content-Type": "application/json"
+        },
+        body:JSON.stringify({paymentSession:sessionId}),
+        method:"POST"
+    })
+    const res = await result.json()
+    return res
+}

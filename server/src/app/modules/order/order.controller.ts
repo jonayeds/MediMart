@@ -62,7 +62,7 @@ const createPayment = catchAsync(async(req,res)=>{
     })
 })
 const verifyPayment = catchAsync(async(req,res)=>{
-    const result  = await OrdeServices.verifyPayment(req.body.paymentSession)
+    const result  = await OrdeServices.verifyPayment(req.body.paymentSession, req.params.orderId, req.user as IReqUser) 
     sendResponse(res,{
         data:result,
         success:true,

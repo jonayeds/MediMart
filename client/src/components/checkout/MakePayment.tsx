@@ -7,6 +7,7 @@ import { toast } from "sonner"
 import { useState } from "react"
 import FileInput from "../shared/FileInput"
 import { uploadContentToDropbox } from "@/services/UploadPrescriptionService"
+import { IOrder } from "@/types/order"
 
 const PlaceOrder = () => {
     const cart = useAppSelector(selectCart)
@@ -20,8 +21,13 @@ const PlaceOrder = () => {
     const handlePlaceOrder = async()=>{
         const id = toast.loading("Placing order...")
         const medicines = cart.map(m=> ({medicine:m.medicine._id, quantity:m.quantity}))
-        const {fileUrls} = await uploadContentToDropbox([prescriptionFile])
-        const result = await placeOrder({medicines, prescription:fileUrls[0]})
+        const orderData:Partial<IOrder> = {}
+        orderData.medicines = medicines
+        if(isPrescriptionRequired && !prescriptionFile){
+          const {fileUrls} = await uploadContentToDropbox([prescriptionFile])
+          orderData.prescription = fileUrls[0]  
+        }
+        const result = await placeOrder(orderData)
         console.log(result)
         if(result.success){
             toast.success(result.message, {id})

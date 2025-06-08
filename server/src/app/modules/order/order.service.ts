@@ -8,11 +8,11 @@ import { AllowedStatus } from "./order.constant";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { makePayment, verifyPaymentUtility } from "./order.utils";
 
-const placeOrder = async (payload: IOrder, user: IReqUser) => {
+const placeOrder = async (payload: Partial<IOrder>, user: IReqUser) => {
   const isMedicineExists = await Medicine.find({
-    $or: payload.medicines.map((m) => ({ _id: m.medicine })),
+    $or: payload?.medicines?.map((m) => ({ _id: m.medicine })),
   });
-  if (isMedicineExists.length !== payload.medicines.length) {
+  if (isMedicineExists.length !== payload?.medicines?.length) {
     throw new AppError(404, "Medicine not found");
   }
   let isPrescriptionRequired = false;
@@ -170,10 +170,18 @@ const createPayment = async (
   return { paymentUrl: payment?.url };
 };
 
-const verifyPayment = async (sessionId: string) => {
+const verifyPayment = async (sessionId: string, orderId:string, user:IReqUser) => {
+  const isOrderExists = await Order.findById(orderId);  
+  if (!isOrderExists) {
+    throw new AppError(404, "Order not found");
+  } 
+  if (isOrderExists.customer.toString() !== user._id.toString()) {
+    throw new AppError(403, "You are not Authorized to verify this order");
+  }   
   const session = await verifyPaymentUtility(sessionId);
   if (session.payment_status === "paid") {
-    return session;
+    const result  = await Order.findByIdAndUpdate(orderId, {paymentSession:sessionId}, {new:true});
+    return result;
   } else {
     throw new AppError(402, "Payment is not successfull");
   }
