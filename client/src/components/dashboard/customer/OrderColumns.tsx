@@ -67,7 +67,7 @@ export const orderCols: ColumnDef<IOrder>[] = [
   },
   {
     accessorKey: "paymentSession",
-    header: "Payment",
+    header: "Payment Status",
     cell: ({ row }) => {
       const payment = row.original.paymentSession
       if (payment === 'pending') {
@@ -92,7 +92,7 @@ export const orderCols: ColumnDef<IOrder>[] = [
   },
   {
     accessorKey: "payment",
-    header: "Payment",
+    header: "Pay",
     cell: ({ row }) => {
       if (row.original.status === "pending" && row.original.paymentSession === 'pending') {
         return <MakePayment  order={row.original} />;
@@ -125,9 +125,18 @@ export const MedicinesCol = ({ row }: { row: Row<IOrder> }) => {
   );
 };
 
+
+
 const ReviewMedicines = () => {
-  return <Button>Review</Button>;
+  // const handledReview = ()=>{
+
+  // }
+  return <Button  >Review</Button>;
 };
+
+
+
+
 const CancelOrder = ({ orderId }: { orderId: string }) => {
   const handleCancel = async () => {
     const id = toast.loading("Cancelling order...");

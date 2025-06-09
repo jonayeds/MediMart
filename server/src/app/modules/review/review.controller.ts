@@ -1,10 +1,11 @@
+import { Types } from "mongoose";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import { ReviewServices } from "./review.service";
 
 const createReview = catchAsync(async(req,res)=>{
     const reviewData = req.body;
-    const result = await ReviewServices.createReview(reviewData);
+    const result = await ReviewServices.createReview(reviewData, req.user?._id as unknown as  Types.ObjectId);    
     sendResponse(res,{
         statusCode: 200,
         success: true,
